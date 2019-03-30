@@ -37,7 +37,7 @@
         <div class="card-home">
             <div class="card-info">
                 <div class="info">
-                    <p id="info-numero">55</p>
+                    <p id="info-numero-pedAberto" class="info-numero">55</p>
                     <p id="info-desc">
                         Pedidos em aberto
                     </p>
@@ -57,7 +57,7 @@
         <div class="card-home">
             <div class="card-info">
                 <div class="info">
-                    <p id="info-numero">33</p>
+                    <p id="info-numero-pedPagos" class="info-numero">33</p>
                     <p id="info-desc">
                         Pedidos em aberto pagos
                     </p>
@@ -77,7 +77,7 @@
         <div class="card-home">
             <div class="card-info">
                 <div class="info">
-                    <p id="info-numero">1055</p>
+                    <p id="info-numero-prod" class="info-numero">
                     <p id="info-desc">
                         Produtos em estoque
                     </p>
@@ -97,7 +97,7 @@
         <div class="card-home">
             <div class="card-info">
                 <div class="info">
-                    <p id="info-numero">160</p>
+                    <p id="info-numero-transporte" class="info-numero">160</p>
                     <p id="info-desc">
                         Pedidos em transporte
                     </p>
@@ -146,6 +146,16 @@
                 }
 
             });
+
+            var numProd = 0;
+            firebase.firestore().collection('Produtos').get().then(function (snapshot) {
+                snapshot.forEach(function (doc) {
+                    var quantidade = doc.data().quantidade
+                    numProd = parseInt(numProd) + parseInt(quantidade)
+                })
+                $('#info-numero-prod').append(numProd)
+
+            })
         })
 
         $(window).on('load', function () {

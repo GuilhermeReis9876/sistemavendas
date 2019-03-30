@@ -40,7 +40,7 @@ body {
     padding: 20px 0 20px 20px;
 }
 
-#info-numero {
+.info-numero {
     font-size: 3rem;
     margin: 0 0 0 0;
     color: #555;
