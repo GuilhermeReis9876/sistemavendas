@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Sistema de Vendas</title>
+	<meta name="viewport"
+		content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+	<!-- Icons -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+		integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+
+	<!-- Fontes -->
+	<link rel="stylesheet" href="../fonts/fontes.css">
+
+	<link rel="stylesheet" href="../css/dashboard.css">
+</head>
+
+<body>
+
+	<!-- Loading -->
+	<div class="" id="loading">
+		<div class="lds-ring">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+		<h1>Carregando...</h1>
+	</div>
+
+	<!-- Nav Lateral -->
+	<div class="nav-lateral">
+		<div class="title">
+			<h1>ADMINGEST</h1>
+		</div>
+		<div class="nav-itens">
+			<h1>Navegação</h1>
+			<div id="nav-home" class="item item-active">
+				<i class="fas fa-home"></i>
+				<p>Home</p>
+			</div>
+			<div id="nav-prod" class="item">
+				<i class="fas fa-box-open"></i>
+				<p>Produtos</p>
+			</div>
+			<div id="nav-ped" class="item">
+				<i class="fas fa-cart-arrow-down"></i>
+				<p>Pedidos</p>
+			</div>
+			<div id="nav-estoque" class="item">
+				<i class="fas fa-boxes"></i>
+				<p>Estoque</p>
+			</div>
+			<div id="nav-transporte" class="item">
+				<i class="fas fa-truck-loading"></i>
+				<p>Transporte</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="center">
+		<!-- Nav Top -->
+		<div class="nav-top">
+			<div class="campo-busca">
+				<input id="busca-input" type="text" placeholder="Digite o que está procurando...">
+				<i id="busca-btn" class="fas fa-search"></i>
+			</div>
+			<div class="profile-options">
+				<img src="" alt="" id="pic-profile">
+				<p id="pic-nome"></p>
+				<div class="dropdown">
+					<button class="btn dropdown-toggle" type="button" id="btn-drop" data-toggle="dropdown"
+						aria-haspopup="true" aria-expanded="false">
+					</button>
+					<div class="dropdown-menu" aria-labelledby="btn-drop">
+						<a class="dropdown-item" href="#">Action</a>
+						<a class="dropdown-item" href="#">Another action</a>
+						<a class="dropdown-item" id="sair" href="#">Sair</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Bloco central -->
+		<div class="bloco-central">
+			<iframe src="home.html" frameborder="0" id="iframe"></iframe>
+		</div>
+	</div>
+
+
+
+
+
+	<!-- Firebase -->
+	<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+
+	<!-- Add additional services that you want to use -->
+	<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-firestore.js"></script>
+	<script type="text/javascript" src="../js/firebase.js">
+	</script>
+
+	<!-- My Js -->
+
+	<script type="text/javascript" src="../jquery/jquery-3.3.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+
+	<script>
+
+		$(document).ready(function () {
+			firebase.auth().onAuthStateChanged(function (user) {
+
+				if (user) {
+					console.log(user)
+					pic = document.getElementById('pic-profile')
+					pic.src = user.photoURL
+					$('#pic-nome').html(user.displayName)
+				}
+				else {
+					window.location.href = '../index.html'
+				}
+
+			});
+
+
+
+			$('#busca-btn').click(function () {
+				if ($('#busca-input').val() == "") {
+					$('#busca-input').toggleClass('busca-active')
+				}
+			})
+
+			$('#sair').click(function () {
+				Deslogar();
+			})
+
+			$('.item').click(function () {
+				id = $(this).attr("id")
+				NavLateral(id)
+				Page(id)
+			})
+
+		})
+
+		$(window).on('load', function () {
+
+			$('#loading').css('display', 'none')
+
+		})
+
+		function Deslogar() {
+			firebase.auth().signOut().then(function () {
+			});
+			window.location.href = '../index.html'
+		}
+
+		function NavLateral(id) {
+			$('.item').removeClass('item-active')
+			$('#' + id).addClass('item-active')
+		}
+
+		function Page(id) {
+
+			if (id == 'nav-home') {
+				const caminho = 'home.html'
+				PageLoad(caminho)
+			}
+			else if (id == 'nav-prod') {
+				const caminho = 'produtos.html'
+				PageLoad(caminho)
+			}
+		}
+
+		function PageLoad(caminho) {
+			const iframe = document.getElementById('iframe')
+			iframe.src = caminho
+		}
+
+
+
+	</script>
+
+</body>
+
+</html>

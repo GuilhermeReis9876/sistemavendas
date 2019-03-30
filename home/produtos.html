@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Vendas</title>
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+
+    <!-- Fontes -->
+    <link rel="stylesheet" href="../fonts/fontes.css">
+
+    <link rel="stylesheet" href="../css/produtos.css">
+</head>
+
+<body>
+
+    <!-- Loading -->
+    <div class="" id="loading">
+        <div class="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <h1>Carregando...</h1>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal-addProd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Adicionar produto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group col-12">
+                                <input id="modal-nome" type="text" class="col-12 modal-input"
+                                    placeholder="Digite o nome do produto">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-6">
+                                <input id="modal-quant" type="text" class="col-6 modal-input"
+                                    placeholder="Digite a quantidade">
+                            </div>
+                            <div class="form-group col-6">
+                                <input id="modal-preco" type="text" class="col-6 modal-input"
+                                    placeholder="Digite o preço">
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Sair</button>
+                    <button type="button" class="btn btn-success" id="modal-adicionar">Adicionar Produto</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="top">
+        <h1 id="title">Produtos</h1>
+        <div class="order">
+            <h1 id="order-title">Ordernar por:</h1>
+            <div id="order-nome" class="order-item order-item-active">
+                <p>Nome</p>
+            </div>
+            <div id="order-quant" class="order-item">
+                <p>Quantidade</p>
+            </div>
+            <div id="order-preco" class="order-item">
+                <p>Preço</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bar-options">
+        <div class="btn" id="btn-adicionar" data-toggle="modal" data-target="#modal-addProd">Adicionar Produto</div>
+    </div>
+
+    <div class="main">
+        <table class="table table-bordered" id="table-prod">
+            <thead>
+                <tr>
+                    <th scope="col">Nome Produto</th>
+                    <th scope="col">Quantidade</th>
+                    <th scope="col">Valor</th>
+                </tr>
+            </thead>
+            <tbody id="table-info">
+
+            </tbody>
+        </table>
+    </div> <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+
+    <!-- Add additional services that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-firestore.js"></script>
+    <script type="text/javascript" src="../js/firebase.js">
+    </script>
+
+    <!-- My Js -->
+
+    <script type="text/javascript" src="../jquery/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            firebase.auth().onAuthStateChanged(function (user) {
+
+                if (user) {
+
+                }
+                else {
+                    window.location.href = '../index.html'
+                }
+
+            });
+
+            $('#modal-adicionar').click(function () {
+                const nome = $('#modal-nome').val()
+                const quant = $('#modal-quant').val()
+                const preco = $('#modal-preco').val()
+
+                if (!nome || !quant || !preco) {
+                    alert('Preencha todos os campos')
+                }
+                else {
+                    firebase.firestore().collection('Produtos').add({
+                        nome: nome,
+                        quantidade: quant,
+                        preco: preco
+                    }).then(function () {
+                        alert('Produto cadastrado com sucesso')
+                        $('#modal-addProd').modal('hide')
+                        $('#modal-nome').val('')
+                        $('#modal-quant').val('')
+                        $('#modal-preco').val('')
+                        $('#table-info').html('')
+                        OrderByName()
+                    })
+                }
+            })
+
+            function OrderByName() {
+                firebase.firestore().collection("Produtos").orderBy("nome", "asc").get().then(function (querySnapshot) {
+                    querySnapshot.forEach(function (doc) {
+                        const data = doc.data();
+                        $('#table-info').append("<tr> <th>" + data.nome + "</th> <th>" + data.quantidade + "</th> <th> R$ " + data.preco + "</th> </tr>")
+                    });
+                });
+                setTimeout(OrderLoad, 2500)
+            }
+
+            OrderByName()
+
+            function OrderByQuant() {
+                firebase.firestore().collection("Produtos").orderBy("quantidade", "desc").get().then(function (querySnapshot) {
+                    querySnapshot.forEach(function (doc) {
+                        const data = doc.data();
+                        $('#table-info').append("<tr> <th>" + data.nome + "</th> <th>" + data.quantidade + "</th> <th> R$ " + data.preco + "</th> </tr>")
+                    });
+                });
+                setTimeout(OrderLoad, 2500)
+            }
+
+            function OrderByPreco() {
+                firebase.firestore().collection("Produtos").orderBy("preco", "desc").get().then(function (querySnapshot) {
+                    querySnapshot.forEach(function (doc) {
+                        const data = doc.data();
+                        $('#table-info').append("<tr> <th>" + data.nome + "</th> <th>" + data.quantidade + "</th> <th> R$ " + data.preco + "</th> </tr>")
+                    });
+                });
+                setTimeout(OrderLoad, 2500)
+            }
+
+
+            $('.order-item').click(function () {
+                id = $(this).attr("id")
+                LimparOrder(id)
+            })
+
+            function LimparOrder(id) {
+                $('.order-item').removeClass('order-item-active')
+                $('#' + id).addClass('order-item-active')
+                $('#table-info').html('')
+                $('#loading').css('display', 'flex')
+
+                if (id == 'order-nome') {
+                    OrderByName()
+                }
+                else if (id == 'order-quant') {
+                    OrderByQuant()
+                }
+                else {
+                    OrderByPreco()
+                }
+            }
+        })
+
+        $(window).on('load', function () {
+
+            $('#loading').css('display', 'none')
+
+        })
+
+        function OrderLoad() {
+            $('#loading').css('display', 'none')
+        }
+
+
+
+    </script>
+
+</body>
+
+</html>
