@@ -19,7 +19,7 @@ body {
 
 .card-home {
     width: 23%;
-    height: 250px;
+    min-height: 250px;
     display: flex;
     flex-direction: column;
     background-color: #fff;
@@ -28,9 +28,10 @@ body {
 }
 
 .card-info {
+    width: 100%;
+    height: 200px;
     display: flex;
     flex-direction: row;
-    flex: 1;
 }
 
 .info {
