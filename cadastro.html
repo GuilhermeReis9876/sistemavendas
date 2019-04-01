@@ -22,6 +22,10 @@
 
 <body>
 
+    <div class="top-bar">
+        <h1>ADMINGEST</h1>
+    </div>
+
     <div class="dash">
         <h1 id="title">
             Sistema de Vendas
@@ -93,14 +97,14 @@
                                 photoURL: 'http://pomeranoalimentos.coop.br/wp-content/uploads/2018/08/user2.png'
                             })
                         }
-                        else if(sexo == 'Prefiro não identificar') {
+                        else if (sexo == 'Prefiro não identificar') {
                             user.updateProfile({
                                 displayName: nome,
                                 photoURL: 'https://upload.wikimedia.org/wikipedia/commons/b/b7/Google_Contacts_logo.png'
                             })
                         }
 
-                        window.location.href = 'home/dashboard.html'
+                        window.location.href = 'home/dashboard'
 
                     }).catch(error => {
                         if (error.code == 'auth/invalid-email') {

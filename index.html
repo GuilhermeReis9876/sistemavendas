@@ -22,6 +22,10 @@
 
 <body>
 
+	<div class="top-bar">
+		<h1>ADMINGEST</h1>
+	</div>
+
 	<div class="dash">
 		<h1 id="title">
 			Sistema de Vendas
@@ -64,12 +68,12 @@
 
 			firebase.auth().onAuthStateChanged(function (user) {
 				if (user) {
-					window.location.href = 'home/dashboard.html'
+					window.location.href = 'home/dashboard'
 				}
 			});
 
 			$('#btn-cadastrar').click(function () {
-				window.location.href = 'cadastro.html'
+				window.location.href = 'cadastro'
 			})
 
 			$('#btn-entrar').click(function () {
@@ -83,7 +87,7 @@
 
 					firebase.auth().signInWithEmailAndPassword(email, senha).then(snapshot => {
 						console.log(snapshot)
-						window.location.href = 'home/dashboard.html'
+						window.location.href = 'home/dashboard'
 
 					}).catch(error => {
 						console.log(error)
@@ -97,7 +101,7 @@
 			$('#btn-google').click(function () {
 				var provider = new firebase.auth.GoogleAuthProvider();
 				firebase.auth().signInWithRedirect(provider).then(function (result) {
-					window.location.href = 'home/dasboard.html'					
+					window.location.href = 'home/dasboard'					
 				}).catch(function (error) {
 					// Handle Errors here.
 					var errorCode = error.code;

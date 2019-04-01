@@ -36,6 +36,7 @@
 	<!-- Nav Lateral -->
 	<div class="nav-lateral">
 		<div class="title">
+			<img src="../assets/icons/logo.png" alt="logo">
 			<h1>ADMINGEST</h1>
 		</div>
 		<div class="nav-itens">
@@ -43,6 +44,10 @@
 			<div id="nav-home" class="item item-active">
 				<i class="fas fa-home"></i>
 				<p>Home</p>
+			</div>
+			<div id="nav-cliente" class="item">
+				<i class="fas fa-users"></i>
+				<p>Clientes</p>
 			</div>
 			<div id="nav-prod" class="item">
 				<i class="fas fa-box-open"></i>
@@ -125,7 +130,7 @@
 					$('#pic-nome').html(user.displayName)
 				}
 				else {
-					window.location.href = '../index.html'
+					window.location.href = '../index'
 				}
 
 			});
@@ -159,7 +164,7 @@
 		function Deslogar() {
 			firebase.auth().signOut().then(function () {
 			});
-			window.location.href = '../index.html'
+			window.location.href = '../index'
 		}
 
 		function NavLateral(id) {
@@ -170,11 +175,19 @@
 		function Page(id) {
 
 			if (id == 'nav-home') {
-				const caminho = 'home.html'
+				const caminho = 'home'
+				PageLoad(caminho)
+			}
+			else if(id == 'nav-cliente'){
+				const caminho = 'clientes'
 				PageLoad(caminho)
 			}
 			else if (id == 'nav-prod') {
-				const caminho = 'produtos.html'
+				const caminho = 'produtos'
+				PageLoad(caminho)
+			}
+			else if (id == 'nav-ped') {
+				const caminho = 'pedidos'
 				PageLoad(caminho)
 			}
 		}

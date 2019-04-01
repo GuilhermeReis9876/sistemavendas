@@ -34,6 +34,27 @@
     </div>
 
     <div class="div-cards">
+
+        <div class="card-home">
+            <div class="card-info">
+                <div class="info">
+                    <p id="info-numero-clientes" class="info-numero">55</p>
+                    <p id="info-desc">
+                        Clientes Atendidos
+                    </p>
+                    <p id="info-hoje">
+                        13 hoje
+                    </p>
+                </div>
+                <div class="card-icon">
+                    <img src="../assets/icons/happy.png" alt="cliente-happy">
+                </div>
+            </div>
+            <div class="card-bottom" id="card-clientes">
+                <p>VER DETALHES</p>
+            </div>
+        </div>
+
         <div class="card-home">
             <div class="card-info">
                 <div class="info">
@@ -59,7 +80,7 @@
                 <div class="info">
                     <p id="info-numero-pedPagos" class="info-numero">33</p>
                     <p id="info-desc">
-                        Pedidos em aberto pagos
+                        Pedidos pagos
                     </p>
                     <p id="info-hoje">
                         13 hoje
@@ -78,12 +99,12 @@
             <div class="card-info">
                 <div class="info">
                     <p id="info-numero-prod" class="info-numero">
-                    <p id="info-desc">
-                        Produtos em estoque
-                    </p>
-                    <p id="info-hoje">
-                        25 hoje
-                    </p>
+                        <p id="info-desc">
+                            Produtos em estoque
+                        </p>
+                        <p id="info-hoje">
+                            25 hoje
+                        </p>
                 </div>
                 <div class="card-icon">
                     <img src="../assets/icons/package.png" alt="package">
@@ -142,7 +163,7 @@
 
                 }
                 else {
-                    window.location.href = '../index.html'
+                    window.location.href = '../index'
                 }
 
             });
